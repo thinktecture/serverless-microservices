@@ -10,10 +10,10 @@ using Newtonsoft.Json;
 
 namespace Serverless
 {
-    public static class PingFunctions
+    public class HealthCheck
     {
         [FunctionName("Ping")]
-        public static IActionResult Run(
+        public IActionResult Run(
             [HttpTrigger(AuthorizationLevel.Anonymous, "GET", Route = "api/status/ping")]
             HttpRequest req,
             ILogger log)
