@@ -12,10 +12,10 @@ using Microsoft.Azure.WebJobs.Extensions.SignalRService;
 
 namespace Serverless
 {
-    public static class GetSignalRConfigurationFunctions
+    public class GetSignalRConfigurationFunctions
     {
         [FunctionName("GetOrdersHubSignalRConfguration")]
-        public static async Task<IActionResult> GetOrdersHubSignalRConfguration(
+        public async Task<IActionResult> GetOrdersHubSignalRConfguration(
             [HttpTrigger(AuthorizationLevel.Anonymous, "GET", Route = "api/config/ordersHub")]
             HttpRequest req,
 
@@ -35,7 +35,7 @@ namespace Serverless
         }
 
         [FunctionName("GetShippingsHubSignalRConfguration")]
-        public static async Task<IActionResult> GetShippingsHubSignalRConfguration(
+        public async Task<IActionResult> GetShippingsHubSignalRConfguration(
             [HttpTrigger(AuthorizationLevel.Anonymous, "GET", Route = "api/config/shippingsHub")]
             HttpRequest req,
 

@@ -10,10 +10,10 @@ using Microsoft.Extensions.Logging;
 
 namespace Serverless
 {
-    public static class LetsEncryptFunctions
+    public class LetsEncryptFunctions
     {
         [FunctionName("LetsEncrypt")]
-        public static HttpResponseMessage Run(
+        public HttpResponseMessage Run(
             [HttpTrigger(AuthorizationLevel.Anonymous, "GET", Route = ".well-known/acme-challenge/{code}")]
             HttpRequest req, 
             string code, 

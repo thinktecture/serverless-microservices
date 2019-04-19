@@ -5,10 +5,10 @@ using Microsoft.Extensions.Logging;
 
 namespace Serverless
 {
-    public static class KeepItWarm
+    public class KeepItWarm
     {
         [FunctionName("KeepItWarm")]
-        public static void Run(
+        public void Run(
             [TimerTrigger("0 */9 * * * *", RunOnStartup = true)]
             TimerInfo myTimer,
             ILogger log)
