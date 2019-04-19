@@ -1,0 +1,17 @@
+# Regularly update the token via the RetrieveToken.http script
+@token = Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IjljNTIxMGFiZWZmZTg2ZjlkMmI5ZTEzM2Q4NWNjZDA4IiwidHlwIjoiSldUIn0.eyJuYmYiOjE1NDgxNTA4ODAsImV4cCI6MTU0ODIzNzI4MCwiaXNzIjoiaHR0cHM6Ly90dC1pZGVudGl0eXNlcnZlcjQtZGVtby5henVyZXdlYnNpdGVzLm5ldCIsImF1ZCI6WyJodHRwczovL3R0LWlkZW50aXR5c2VydmVyNC1kZW1vLmF6dXJld2Vic2l0ZXMubmV0L3Jlc291cmNlcyIsImFwaSJdLCJjbGllbnRfaWQiOiJyZXNvdXJjZW93bmVyIiwic3ViIjoiODg0MjExMTMiLCJhdXRoX3RpbWUiOjE1NDgxNTA4ODAsImlkcCI6ImxvY2FsIiwic2NvcGUiOlsib3BlbmlkIiwicHJvZmlsZSIsImFwaSJdLCJhbXIiOlsicHdkIl19.zWFvJ1Gkd4zDkJLnqQWSrEh3KB7za5TvHMq-A2HlQylb4IKLWmEuitZBRUJyec4PXSAnrRq5nRX7SHclk11--KE9DMyHrP8kY9LYGK52M-cx9hP4ci9vjaW6nn-Mc0gEjbiLGyHN0jljzSu28zm-jWiv9FY7hVRllPG8Hjcpt4Pc4sGQRpDOgYHw8oq7MVcis6mnKbvnOWVlGPxGIConc_GFOPzYeCZ8UV2p478BOTnUS0x4HKv9f66Af8KxJT9z_NZaKMyMXyHSPDhPTSs9SqcWrjubmlm1HR4vRfTmIcvXYMCPaZrW0cbh-Nza2jtFFu54eZ_WXpmnjwDqSO08BQ
+
+POST http://localhost:7071/api/orders
+#POST https://orders.serverlessmicroservices.net/api/orders
+Content-Type: application/json
+Authorization: Bearer {{ token }}
+
+{
+  "description": "Order for Valentin",
+  "items": [
+    {
+      "id": "906625b2-2aa8-4799-9a86-dd98b577b681",
+      "quantity": 2
+    }
+  ]
+}

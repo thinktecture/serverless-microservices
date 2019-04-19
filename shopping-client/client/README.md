@@ -1,0 +1,1 @@
+# Simple Orders monitoring application - for Azure Serverless Microservices demo scenario

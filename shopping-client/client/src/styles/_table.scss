@@ -1,0 +1,36 @@
+@import '_variables';
+
+.table {
+  width: 100%;
+
+  border: 0;
+  border-spacing: 0;
+
+  td, th {
+    padding: $gap/4;
+  }
+
+  thead {
+    tr {
+      background-color: $primary-color;
+
+      th {
+        text-align: left;
+        color: white;
+        font-weight: bold;
+
+        &:first-child {
+          width: 20%;
+        }
+      }
+    }
+  }
+
+  tbody {
+    tr {
+      &:nth-child(even) {
+        background-color: darken($background-color, 3%);
+      }
+    }
+  }
+}

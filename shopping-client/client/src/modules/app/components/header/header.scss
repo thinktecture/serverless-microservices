@@ -1,0 +1,53 @@
+@import '../../../../styles/_utilities';
+
+:host {
+  top: 0;
+  left: 0;
+  right: 0;
+  position: fixed;
+  display: flex;
+  height: $header-height;
+
+  background-color: $primary-color;
+
+  align-items: center;
+
+  padding: $gap/2;
+  color: white;
+
+  @include media('<=desktop') {
+    justify-content: center;
+  }
+}
+
+.brand {
+  padding-right: $gap/2;
+}
+
+.brand-logo {
+  height: $header-height - $gap;
+  margin-left: auto;
+
+  @include media('<=desktop') {
+    margin-left: inherit;
+    position: absolute;
+    right: $gap/2;
+  }
+}
+
+.back-chevron {
+  background-color: transparent;
+  color: white;
+  position: absolute;
+  left: $gap/2;
+  border: none;
+  outline: none;
+
+  i {
+    font-size: 20px;
+  }
+
+  @include media('>desktop') {
+    display: none;
+  }
+}

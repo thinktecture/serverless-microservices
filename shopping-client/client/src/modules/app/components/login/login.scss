@@ -1,0 +1,75 @@
+.login-form {
+  background-color: #fff;
+
+  min-height: 250px;
+  width: 90%;
+  max-width: 400px;
+
+  display: flex;
+  box-shadow: 0 10px 20px 0 rgba(0,0,0, .1);
+  margin: 0 auto;
+}
+
+form {
+  width: 100%;
+
+  display: flex;
+  flex-flow: row wrap;
+  padding: 10px 20px;
+
+  legend {
+    font-size: 24px;
+    flex: 0 0 100%;
+  }
+
+  fieldset {
+    border: none;
+    flex: 0 0 100%;
+    padding: 20px 0;
+  }
+
+  input {
+    min-width: 100%;
+
+    font-size: 15px;
+
+    border: 1px solid rgba(0,0,0, .1);
+    border-radius: 5px;
+    margin: 5px 0;
+    padding: 7px 10px;
+    transition: .3s all;
+    will-change: border-color, box-shadow;
+
+    &:focus {
+      border-color: #ff5850;
+      box-shadow: 0 3px 7px 0 rgba(0,0,0, .12);
+      outline: none;
+    }
+  }
+
+  button {
+    background-color: #ff5850;
+
+    font-size: 15px;
+    line-height: 20px;
+    color: white;
+
+    align-self: flex-end;
+    border: 1px solid transparent;
+    border-radius: 30px;
+    cursor: pointer;
+    margin: 0 0 15px auto;
+    padding: 7px 25px;
+    transition: .3s all;
+    will-change: box-shadow, border-color, background-color;
+
+    &:focus, &:hover {
+      background-color: darken(#ff5850, 5%);
+      border-color: lighten(#ff5850, 5%);
+      box-shadow: 0 3px 7px 0 rgba(0,0,0, .12);
+      outline: none;
+    }
+  }
+}
+
+

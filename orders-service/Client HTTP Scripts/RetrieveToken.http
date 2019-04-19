@@ -1,0 +1,9 @@
+POST https://tt-identityserver4-demo.azurewebsites.net/connect/token
+Content-Type: application/x-www-form-urlencoded
+
+client_id=resourceowner
+&client_secret=no-really-a-secret
+&grant_type=password
+&username=bob
+&password=bob
+&scope=openid profile api

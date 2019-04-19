@@ -1,0 +1,20 @@
+{
+    "disabled": true,
+    "bindings": [
+      {
+        "authLevel": "anonymous",
+        "type": "httpTrigger",
+        "direction": "in",
+        "name": "req",
+        "methods": [
+          "get"
+        ],
+        "route": "api/productssearch/{*searchterm}"
+      },
+      {
+        "type": "http",
+        "direction": "out",
+        "name": "res"
+      }
+    ]
+  }

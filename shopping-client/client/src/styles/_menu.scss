@@ -1,0 +1,38 @@
+@import '_utilities';
+
+html {
+  body {
+    @include media('<=desktop') {
+      @include media('>tablet') {
+        padding-left: $menu-width;
+      }
+
+      &.show-menu {
+        app-menu {
+          transform: none;
+
+          > .menu {
+            > .menu-item {
+              &.active:not(.show) {
+                box-shadow: none;
+                background-color: lighten($alternative-background-color, 10%);
+
+                .menu-link {
+                  color: white;
+                }
+              }
+            }
+          }
+        }
+
+        .backdrop {
+          opacity: 0.75;
+        }
+      }
+    }
+
+    @include media('<=tablet') {
+      padding-bottom: $menu-height;
+    }
+  }
+}

@@ -1,0 +1,11 @@
+<button class="back-chevron" (click)="goBack()" *ngIf="isBackChevronVisible"><i class="fa fa-chevron-left"></i></button>
+
+<span class="brand"><strong>MyShopping</strong></span>
+
+<app-menu></app-menu>
+
+<div *ngIf="isLoggedIn" class="brand-logo">
+  <i class="fa fa-sign-out" (click)="logout()"></i>
+</div>
+
+<img *ngIf="!isLoggedIn" src="assets/logo.svg" class="brand-logo" />

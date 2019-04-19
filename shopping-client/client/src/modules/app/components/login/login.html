@@ -1,0 +1,14 @@
+<div class="login-form">
+  <form role="form" (ngSubmit)="submit()" #loginForm="ngForm">
+    <legend>
+      Sign In
+    </legend>
+    <fieldset>
+      <input type="text" class="form-control" id="username" required [(ngModel)]="username" name="username"
+             placeholder="Username">
+      <input type="password" class="form-control" id="password" required [(ngModel)]="password" name="password"
+             placeholder="Password">
+    </fieldset>
+    <button type="submit" class="btn btn-primary" [disabled]="!loginForm.form.valid">Login</button>
+  </form>
+</div>

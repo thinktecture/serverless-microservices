@@ -1,0 +1,1 @@
+ssh -R <YOUR_WANTED_SUDOMAIN_ON_SERVEO.NET>:80:localhost:7071 serveo.net

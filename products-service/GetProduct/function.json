@@ -1,0 +1,26 @@
+{
+    "disabled": false,
+    "bindings": [
+      {
+        "authLevel": "anonymous",
+        "type": "httpTrigger",
+        "direction": "in",
+        "name": "req",
+        "methods": ["get"],
+        "route": "api/products/{productId}"
+      },
+      {
+        "type": "http",
+        "direction": "out",
+        "name": "res"
+      },
+      {
+        "name": "product",
+        "type": "table",
+        "tableName": "products",
+        "partitionKey": "products",
+        "rowKey": "{productId}",
+        "direction": "in"
+      }
+    ]
+  }

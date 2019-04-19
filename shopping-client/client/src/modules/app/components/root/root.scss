@@ -1,0 +1,9 @@
+@import '../../../../styles/_variables';
+
+:host {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+
+  padding: $gap;
+}

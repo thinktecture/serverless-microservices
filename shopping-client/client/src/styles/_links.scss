@@ -1,0 +1,8 @@
+@import '_variables.scss';
+
+router-outlet + * {
+  a {
+    color: $primary-color;
+    text-decoration: none;
+  }
+}

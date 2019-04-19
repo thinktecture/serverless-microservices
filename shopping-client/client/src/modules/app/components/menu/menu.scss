@@ -1,0 +1,220 @@
+@import '../../../../styles/_utilities';
+
+:host {
+  display: flex;
+  flex-direction: column;
+  z-index: 100;
+
+  @include media('<=desktop') {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: $menu-width + $submenu-width;
+    justify-content: center;
+
+    background-color: $background-color;
+
+    transition: transform $transition-duration;
+    will-change: transform;
+
+    @include media('>tablet') {
+      top: $header-height;
+      transform: translateX(-$submenu-width);
+      border-right: 1px solid darken($background-color, 10%);
+    }
+  }
+
+  @include media('<=tablet') {
+    width: 100vw;
+    height: $menu-height + $submenu-height;
+    align-items: center;
+    justify-content: flex-start;
+    transform: translateY($submenu-height);
+    border-top: 1px solid darken($background-color, 10%);
+  }
+}
+
+.fa {
+  padding-right: 6px;
+}
+
+.menu {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+
+  display: flex;
+
+  @include media('<=desktop', '>tablet') {
+    flex-direction: column;
+    width: $menu-width;
+    align-self: flex-end;
+  }
+
+  @include media('<=tablet') {
+    flex-direction: row;
+    height: $menu-height;
+    width: 100%;
+  }
+}
+
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  flex-direction: column;
+  top: 100%;
+
+  background-color: $background-color;
+  border-left: 1px solid $primary-color;
+  border-right: 1px solid $primary-color;
+  border-bottom: 1px solid $primary-color;
+
+  border-bottom-left-radius: $border-radius;
+  border-bottom-right-radius: $border-radius;
+
+  width: 100%;
+
+  .menu-link {
+    color: black;
+  }
+
+  @include media('>desktop') {
+    width: inherit;
+    min-width: 100%;
+  }
+
+  @include media('<=desktop') {
+    top: 0;
+    left: 0;
+    width: $submenu-width;
+    bottom: 0;
+    border: none;
+    background-color: $primary-color;
+    justify-content: center;
+
+    border-radius: 0;
+
+    .menu-link {
+      color: white;
+      justify-content: center;
+      height: inherit;
+
+      .fa {
+        font-size: inherit;
+      }
+    }
+
+    .menu-item {
+      &.active {
+        background-color: #E54F47;
+      }
+    }
+  }
+
+  @include media('<=tablet') {
+    top: $menu-height;
+    width: 100%;
+    height: $submenu-height;
+    justify-content: flex-start;
+  }
+}
+
+.menu-item {
+  cursor: pointer;
+  position: relative;
+  display: flex;
+
+  &.show {
+    .dropdown-menu {
+      display: inherit;
+    }
+
+    @include media('<=desktop') {
+      background-color: $primary-color;
+
+      .menu-link {
+        color: white;
+      }
+    }
+  }
+
+  @include media('<=desktop') {
+    position: static;
+  }
+
+  &.active {
+    @include media('<=tablet') {
+      box-shadow: 0 -5px 0 0 $primary-color inset;
+    }
+
+    @include media('<=desktop', '>tablet') {
+      box-shadow: 5px 0 0 0 $primary-color inset;
+    }
+
+    @include media('>desktop') {
+      background-color: $background-color;
+
+      > .menu-link {
+        color: $primary-color;
+      }
+
+      .dropdown-menu {
+        .menu-item {
+          background-color: transparent;
+        }
+      }
+    }
+  }
+}
+
+.menu-link {
+  color: white;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  width: 100%;
+
+  padding: $gap/2;
+
+  @include media('>desktop') {
+    height: $header-height;
+  }
+
+  @include media('<=desktop') {
+    color: black;
+    flex-wrap: wrap;
+    justify-content: center;
+
+    .fa {
+      font-size: 2em;
+    }
+  }
+}
+
+.menu:not(.dropdown-menu) {
+  @include media('<=desktop') {
+    > .menu-item {
+      > .menu-link {
+        .fa {
+          padding: 0;
+        }
+      }
+    }
+  }
+
+  @include media('<=tablet') {
+    > .menu-item {
+      flex: 1;
+
+      > .menu-link {
+        .fa {
+          width: 100%;
+          text-align: center;
+          padding: 0;
+        }
+
+        font-size: 0.8em;
+      }
+    }
+  }
+}

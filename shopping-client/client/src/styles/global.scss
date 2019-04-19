@@ -1,0 +1,27 @@
+@import '_variables.scss';
+@import '_menu.scss';
+@import '_backdrop.scss';
+@import '_table.scss';
+@import '_links.scss';
+@import '_loader.scss';
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  max-width: 100vw;
+  max-height: 100vh;
+  display: flex;
+  min-width: 100vw;
+  min-height: 100vh;
+  margin: 0;
+  padding: $header-height 0 0;
+
+  font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif;
+  background-color: $background-color;
+  user-select: none;
+  line-height: 1.5;
+}

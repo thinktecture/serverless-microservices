@@ -1,0 +1,1 @@
+func host start --build

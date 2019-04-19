@@ -1,0 +1,9 @@
+{
+  "azureFunctions.projectRuntime": "~2",
+  "azureFunctions.projectLanguage": "Java",
+  "azureFunctions.templateFilter": "Verified",
+  "debug.internalConsoleOptions": "neverOpen",
+  "java.configuration.updateBuildConfiguration": "interactive",
+  "azureFunctions.deploySubpath": "target/azure-functions/shipping-service-java/",
+  "azureFunctions.preDeployTask": "package"
+}
