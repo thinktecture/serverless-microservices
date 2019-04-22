@@ -45,9 +45,7 @@ namespace IdentityServer
             var cert = new X509Certificate2(pfxBytes, (string)null, X509KeyStorageFlags.MachineKeySet);
             
             builder.AddSigningCredential(cert);
-
-            services.AddTransient<ICorsPolicyService, DemoCorsPolicy>();
-
+            
             services.AddSingleton<IEntityTypeConfigurationsContainer, EntityTypeConfigurationsContainer>();
 
             services.AddSingleton(((c) =>

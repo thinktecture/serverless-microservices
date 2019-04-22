@@ -77,7 +77,8 @@ namespace IdentityServer
                         new Secret("no-really-a-secret".Sha256())
                     },
                     AllowedScopes = { "openid", "profile", "email", "api" },
-                    AccessTokenLifetime = 3600 *24
+                    AccessTokenLifetime = 3600 *24,
+                    AllowedCorsOrigins = new List<string> { "http:localhost:4200", "https://orders-spy.serverlessmicroservices.net", "https://slshopping.azureedge.net", "https://cwserverlessmsshopping.z6.web.core.windows.net" }
                 }
             };
         }
