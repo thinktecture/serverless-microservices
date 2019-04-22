@@ -5,11 +5,16 @@ using System;
 using System.IO;
 using System.Security.Cryptography.X509Certificates;
 using IdentityServer4.Services;
+using IdentityServer4.Stores;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
+using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Auth;
+using Serverless;
+using SInnovations.Azure.TableStorageRepository;
 
 namespace IdentityServer
 {
@@ -38,9 +43,23 @@ namespace IdentityServer
             var certificateString = Configuration[certNameKey];
             var pfxBytes = Convert.FromBase64String(certificateString);
             var cert = new X509Certificate2(pfxBytes, (string)null, X509KeyStorageFlags.MachineKeySet);
+            
             builder.AddSigningCredential(cert);
 
             services.AddTransient<ICorsPolicyService, DemoCorsPolicy>();
+
+            services.AddSingleton<IEntityTypeConfigurationsContainer, EntityTypeConfigurationsContainer>();
+
+            services.AddSingleton(((c) =>
+            {
+                var account = CloudStorageAccount.Parse(Configuration["AzureWebJobsStorage"]);
+                account.CreateCloudTableClient().GetTableReference(PersistedGrantContext.TABLENAME).CreateIfNotExistsAsync().Wait();
+                
+                return account;
+            }));
+
+            services.AddTransient<PersistedGrantContext>()
+               .AddTransient<IPersistedGrantStore, TableStoragePersistedGrantStore>();
         }
 
         public void Configure(IApplicationBuilder app)
@@ -53,7 +72,7 @@ namespace IdentityServer
             app.UseStaticFiles(new StaticFileOptions
             {
                 FileProvider = new PhysicalFileProvider(Path.Combine(
-                    System.Environment.GetEnvironmentVariable("HOST_FUNCTION_CONTENT_PATH"), "wwwroot")),
+                    System.Environment.GetEnvironmentVariable("HOST_FUNCTION_CONTENT_PATH"), "wwwroot"))
             });
 
             app.UseIdentityServer();

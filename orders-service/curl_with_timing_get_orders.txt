@@ -1,0 +1,1 @@
+curl -o /dev/null -s -w 'Establish Connection: %{time_connect}s\nTTFB: %{time_starttransfer}s\nTotal: %{time_total}s\n' https://orders.serverlessmicroservices.net/api/orders
