@@ -23,7 +23,13 @@
     <PackageReference Include="Serilog.Sinks.ApplicationInsights" Version="2.6.0" />
     <PackageReference Include="Serilog.Sinks.Console" Version="3.1.1" />
     <PackageReference Include="Serilog.Sinks.File" Version="4.0.0" />
-    <PackageReference Include="S-Innovations.Azure.TableStorageRepository" Version="4.0.0-pre-2019030301" />
+    <PackageReference Include="WindowsAzure.Storage" Version="9.3.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="S-Innovations.Azure.TableStorageRepository">
+      <HintPath>Binaries/S-Innovations.Azure.TableStorageRepository</HintPath>
+    </Reference>
   </ItemGroup>
 
   <ItemGroup>
