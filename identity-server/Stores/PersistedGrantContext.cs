@@ -21,7 +21,6 @@ namespace Serverless
 
         protected override void OnModelCreating(TableStorageModelBuilder modelbuilder)
         {
-
             modelbuilder.Entity<PersistedGrant>()
                .HasKeys(k => new { k.SubjectId, k.ClientId }, r => new { r.Type, r.Key })
                .WithIndex(k => k.Key, true, TABLENAME)
