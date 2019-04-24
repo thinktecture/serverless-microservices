@@ -39,7 +39,8 @@ namespace Serverless
         {
             log.LogInformation("CreateNewOrder SB queue trigger function processed a request.");
 
-            // TODO: talk to other systems, do checks etc. ... - the REAL work :-)
+            // NOTE: talk to other systems, do checks etc. ... - do the REAL work :-)
+            // This is a demo, after all.
 
             try
             {
@@ -65,7 +66,6 @@ namespace Serverless
                 throw;
             }
 
-            // NOTE: Implement group feature from SignalR binding
             var messageToNotify = new { userId = message.UserId, orderId = message.Order.Id };
 
             await notificationMessages.AddAsync(new SignalRMessage
