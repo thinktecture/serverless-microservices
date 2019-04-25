@@ -7,7 +7,7 @@
       <th>Created</th>
       <th>Shipping</th>
     </tr>
-  </thead> 
+  </thead>
   <tbody>
     <tr *ngFor="let orderWithItems of ordersWithItems$ | async">
       <td width="40%">
@@ -26,7 +26,7 @@
         </ul>
       </td>
       <td width="40%">{{ orderWithItems.order.created | date: 'dd.MM.yyyy HH:mm' }}</td>
-      <td *ngIf="orderWithItems.order.shippingCreated$ | async; else empty"><i class="fa fa-check"></i></td>
+      <td *ngIf="orderWithItems.shipped$ | async; else empty"><i class="fa fa-check"></i></td>
       <ng-template #empty>
         <td> </td>
       </ng-template>

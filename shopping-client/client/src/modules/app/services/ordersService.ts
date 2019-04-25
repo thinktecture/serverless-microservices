@@ -10,20 +10,17 @@ import { PushService } from "./pushService";
 @Injectable()
 export class OrdersService {
   constructor(private _http: HttpClient,
-              private _pushService: PushService) { }
+    private _pushService: PushService) { }
 
-  public getOrders(): Observable<{ order: Order; items: Observable<Product>[] }[]> {
+  public getOrders(): Observable<{ order: Order; items: Observable<Product>[]; shipped$: Observable<boolean> }[]> {
     return this.requestOrders().pipe(
-        map(orders => orders.map(order => {
-          order.shippingCreated$ = this._pushService.orderShipping$.pipe(map(id => {
-            return id === order.id;
-          })
-        );
-
-        const items = order.items.map(({ id }) => this.requestProductSafely(id));
-
-        return { order, items };
-      })),
+      map(orders =>
+        orders.map(order => {
+          const items = order.items.map(({ id }) => this.requestProductSafely(id));
+          const shipped$ = this._pushService.getShippingStatus(order.id);
+          return { order, items, shipped$ };
+        }),
+      ),
     );
   }
 

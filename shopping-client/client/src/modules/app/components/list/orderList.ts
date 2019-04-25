@@ -10,7 +10,7 @@ import { Product } from "../../models/product";
   templateUrl: "orderList.html"
 })
 export class OrderListComponent implements OnInit {
-  public ordersWithItems$: Observable<{ order: Order; items: Observable<Product>[] }[]>;
+  public ordersWithItems$: Observable<{ order: Order; items: Observable<Product>[]; shipped$: Observable<boolean> }[]>;
 
   constructor(
     private _orderService: OrdersService,

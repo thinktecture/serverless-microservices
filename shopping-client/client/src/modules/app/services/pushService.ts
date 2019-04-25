@@ -5,6 +5,7 @@ import { SignalRConnectionInformation } from "../models/signalRConnectionInforma
 import { HttpClient } from "@angular/common/http";
 import { Observable, Subject } from "rxjs";
 import * as signalR from "@aspnet/signalr";
+import { filter, map } from 'rxjs/operators';
 
 @Injectable()
 export class PushService {
@@ -14,10 +15,7 @@ export class PushService {
   public orderShipping: Subject<string> = new Subject();
   public orderCreated: Subject<string> = new Subject();
 
-  public orderShipping$: Observable<string>;
-
   constructor(private _http: HttpClient) {
-    this.orderShipping$ = this.orderShipping.asObservable();
   }
 
   private async restartConnection(connection: HubConnection) {
@@ -28,6 +26,13 @@ export class PushService {
       setTimeout(() => this.restartConnection(connection), 2000);
     }
   };
+
+  public getShippingStatus(id: string): Observable<boolean> {
+    return this.orderShipping.pipe(
+      filter(shippedId => shippedId === id),
+      map(() => true)
+    );
+  }
 
   public start(): void {
     this.getConnectionInfo("ordersHub").subscribe(config => {
