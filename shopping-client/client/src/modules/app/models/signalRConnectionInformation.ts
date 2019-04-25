@@ -1,4 +1,4 @@
-export class SignalRConnectionInformation {
+export interface SignalRConnectionInformation {
   url: string;
   accessToken: string;
 }

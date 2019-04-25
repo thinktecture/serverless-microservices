@@ -6,21 +6,22 @@ import { catchError, map } from 'rxjs/operators';
 import { Product } from "../models/product";
 import { Order } from "../models/order";
 import { PushService } from "./pushService";
+import { OrderWithItems } from "../models/orderWithItems";
 
 @Injectable()
 export class OrdersService {
   constructor(private _http: HttpClient,
     private _pushService: PushService) { }
 
-  public getOrders(): Observable<{ order: Order; items: Observable<Product>[]; shipped$: Observable<boolean> }[]> {
+  public getOrders(): Observable<OrderWithItems[]> {
     return this.requestOrders().pipe(
       map(orders =>
         orders.map(order => {
           const items = order.items.map(({ id }) => this.requestProductSafely(id));
           const shipped$ = this._pushService.getShippingStatus(order.id);
           return { order, items, shipped$ };
-        }),
-      ),
+        })
+      )
     );
   }
 
