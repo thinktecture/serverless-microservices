@@ -16,6 +16,7 @@ namespace Serverless
         public IActionResult Run(
             [HttpTrigger(AuthorizationLevel.Anonymous, "GET", Route = "api/status/ping")]
             HttpRequest req,
+            ExecutionContext context,
             ILogger log)
         {
             log.LogInformation("Ping HTTP trigger function processed a request.");

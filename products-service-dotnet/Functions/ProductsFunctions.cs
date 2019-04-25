@@ -17,12 +17,12 @@ using Willezone.Azure.WebJobs.Extensions.DependencyInjection;
 
 namespace Serverless
 {
-    public static class ProductsFunctions
+    public class ProductsFunctions
     {
         private const string ALLPRODUCTS = "allproducts";
 
         [FunctionName("ListProducts")]
-        public static async Task<IActionResult> Run(
+        public async Task<IActionResult> ListProducts(
             [HttpTrigger(AuthorizationLevel.Anonymous, "GET", Route = "products")]
             HttpRequest req,
 
@@ -40,41 +40,63 @@ namespace Serverless
 
             if(!cache.TryGetValue(ALLPRODUCTS, out products))
             {
-                var query = new TableQuery<ProductEntity>();
-                var productEntities = (await productsTable.ExecuteQuerySegmentedAsync(query, null)).ToList();
-                
-                products  = productEntities.Select(p => p.ToProduct()).ToList();
-
-                var expirationTime = DateTime.Today.AddDays(1);
-                var cacheEntryOptions = new MemoryCacheEntryOptions().SetAbsoluteExpiration(expirationTime);
-                cache.Set(ALLPRODUCTS, products, cacheEntryOptions);
+                var productsFromCache = await FillProductsCache(productsTable, cache);
+                products = productsFromCache.Select(p => new Product{ Id = p.Id, Name = p.Name }).ToList();
             }
 
             return new OkObjectResult(products);
         }
 
         [FunctionName("GetProduct")]
-        public static IActionResult GetProductById(
+        public async Task<ActionResult> GetProduct(
             [HttpTrigger(AuthorizationLevel.Anonymous, "GET", Route = "products/{id}")]
             HttpRequest req,
             
-            [Table("products", "products", "{id}")]
-            ProductDetailsEntity productDetailsEntity,
-            
             string id,
             
+            [Table("products", "products")]
+            CloudTable productsTable,
+
+            [Inject]
+            IMemoryCache cache,
+
             ILogger log)
         {
-            log.LogInformation("***GetProductById HTTP trigger function processed a request.");
+            log.LogInformation("***GetProduct HTTP trigger function processed a request.");
 
-            if (productDetailsEntity == null)
+            List<ProductDetails> products;
+
+            if(!cache.TryGetValue(ALLPRODUCTS, out products))
+            {
+                products = await FillProductsCache(productsTable, cache);
+            }
+
+            ProductDetails productDetails = products.Where(p => p.Id == Guid.Parse(id)).FirstOrDefault();
+
+            if (productDetails == null)
             {
                 log.LogInformation($"Product {id} not found");
 
                 return new NotFoundResult();
             }
 
-            return new OkObjectResult(productDetailsEntity.ToProductDetails());
+            return new OkObjectResult(productDetails);
+        }
+
+        private async Task<List<ProductDetails>> FillProductsCache(CloudTable productsTable, IMemoryCache cache)
+        {
+            List<ProductDetails> products;
+
+            var query = new TableQuery<ProductDetailsEntity>();
+            var productEntities = (await productsTable.ExecuteQuerySegmentedAsync(query, null)).ToList();
+            
+            products  = productEntities.Select(p => p.ToProductDetails()).ToList();
+
+            var expirationTime = DateTime.Today.AddHours(1);
+            var cacheEntryOptions = new MemoryCacheEntryOptions().SetAbsoluteExpiration(expirationTime);
+            cache.Set(ALLPRODUCTS, products, cacheEntryOptions);
+
+            return products;
         }
     }
 }
