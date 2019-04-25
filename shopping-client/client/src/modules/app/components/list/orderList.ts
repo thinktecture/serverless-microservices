@@ -1,13 +1,16 @@
 import { Component, OnInit } from "@angular/core";
 import { OrdersService } from "../../services/ordersService";
 import { PushService } from "../../services/pushService";
+import { Observable } from "rxjs";
+import { Order } from "../../models/order";
+import { Product } from "../../models/product";
 
 @Component({
   selector: "app-order-list",
   templateUrl: "orderList.html"
 })
 export class OrderListComponent implements OnInit {
-  public orders = [];
+  public ordersWithItems$: Observable<{ order: Order; items: Observable<Product>[] }[]>;
 
   constructor(
     private _orderService: OrdersService,
@@ -16,22 +19,10 @@ export class OrderListComponent implements OnInit {
     this._pushService.orderCreated.subscribe(_ => {
       this.loadOrders();
     });
-
-    this._pushService.orderShipping.subscribe(orderId => {
-      const index = this.orders.findIndex(order => order.id === orderId);
-
-      if (index !== -1) {
-        const updatedOrder = this.orders[index];
-        updatedOrder.shippingCreated = true;
-        this.orders[index] = updatedOrder;
-      }
-    });
   }
 
   private loadOrders() {
-    this._orderService.getOrders().subscribe(data => {
-      this.orders = data;
-    });
+    this.ordersWithItems$ = this._orderService.getOrders();
   }
 
   public ngOnInit(): void {

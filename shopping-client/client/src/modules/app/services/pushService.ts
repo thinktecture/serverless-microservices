@@ -14,7 +14,11 @@ export class PushService {
   public orderShipping: Subject<string> = new Subject();
   public orderCreated: Subject<string> = new Subject();
 
-  constructor(private _http: HttpClient) { }
+  public orderShipping$: Observable<string>;
+
+  constructor(private _http: HttpClient) {
+    this.orderShipping$ = this.orderShipping.asObservable();
+  }
 
   private async restartConnection(connection: HubConnection) {
     try {

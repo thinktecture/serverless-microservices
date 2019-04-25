@@ -1,30 +1,46 @@
 import { Injectable } from "@angular/core";
 import { environment } from "../../../environments/environment";
 import { HttpClient } from "@angular/common/http";
-import { Observable, from, of } from "rxjs";
-import { switchMap, toArray, catchError, concatMap } from 'rxjs/operators';
+import { Observable, of } from "rxjs";
+import { catchError, map } from 'rxjs/operators';
+import { Product } from "../models/product";
+import { Order } from "../models/order";
+import { PushService } from "./pushService";
 
 @Injectable()
 export class OrdersService {
-  constructor(private _http: HttpClient) {}
+  constructor(private _http: HttpClient,
+              private _pushService: PushService) { }
 
-  public getOrders(): Observable<any[]> {
+  public getOrders(): Observable<{ order: Order; items: Observable<Product>[] }[]> {
+    return this.requestOrders().pipe(
+        map(orders => orders.map(order => {
+          order.shippingCreated$ = this._pushService.orderShipping$.pipe(map(id => {
+            return id === order.id;
+          })
+        );
 
-    const ordersList = this._http.get<any>(environment.ordersApiBaseUrl + "orders")
-      .pipe(
-        switchMap(orders => from(orders)),
-        // TODO: loop through all items
-        concatMap((order: any) => this._http.get<any>(environment.productsApiBaseUrl + "products/" + order.items[0].id),
-          (order, items) => Object.assign(order, {items: [items]})
-        ),
-        toArray(),
-        catchError((err) => {
-          console.log(`Inner error: ${err}`);
-          // TODO: what should we do in case of errors?
-          // Not being able to get the products info should not break the client!
-          return of([]);
-      }));
+        const items = order.items.map(({ id }) => this.requestProductSafely(id));
 
-      return ordersList;
+        return { order, items };
+      })),
+    );
+  }
+
+  private requestOrders(): Observable<Order[]> {
+    const url = `${environment.ordersApiBaseUrl}orders`;
+
+    return this._http.get<Order[]>(url);
+  }
+
+  private requestProductSafely(id: string): Observable<Product> {
+    return this.requestProduct(id)
+      .pipe(catchError(err => of({ id, name: 'Ooops...' })));
+  }
+
+  private requestProduct(id: string): Observable<Product> {
+    const url = `${environment.productsApiBaseUrl}products/${id}`;
+
+    return this._http.get<Product>(url);
   }
 }

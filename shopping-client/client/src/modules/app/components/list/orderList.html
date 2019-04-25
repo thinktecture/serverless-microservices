@@ -7,18 +7,29 @@
       <th>Created</th>
       <th>Shipping</th>
     </tr>
-  </thead>
+  </thead> 
   <tbody>
-    <tr *ngFor="let order of orders">
+    <tr *ngFor="let orderWithItems of ordersWithItems$ | async">
       <td width="40%">
-        <p>{{ order.description }}</p>
-        <ul *ngFor="let item of order.items">
-          <i>{{ order.items[0].name }}</i>
+        <p>{{ orderWithItems.order.description }}</p>
+        <ul>
+          <ng-container *ngFor="let item$ of orderWithItems.items; index as i">
+            <li *ngIf="item$ | async as item; else loading">
+              {{ orderWithItems.order.items[i].quantity }}x {{ item.name }}
+            </li>
+            <ng-template #loading>
+              <li>
+                ...
+              </li>
+            </ng-template>
+          </ng-container>
         </ul>
       </td>
-      <td width="40%">{{ order.created | date: 'dd.MM.yyyy HH:mm' }}</td>
-      <td *ngIf="order.shippingCreated"><i class="fa fa-check"></i></td>
-      <td *ngIf="!order.shippingCreated"> </td>
+      <td width="40%">{{ orderWithItems.order.created | date: 'dd.MM.yyyy HH:mm' }}</td>
+      <td *ngIf="orderWithItems.order.shippingCreated$ | async; else empty"><i class="fa fa-check"></i></td>
+      <ng-template #empty>
+        <td> </td>
+      </ng-template>
     </tr>
   </tbody>
 </table>
