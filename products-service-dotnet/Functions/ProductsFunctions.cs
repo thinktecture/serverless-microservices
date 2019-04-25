@@ -1,19 +1,17 @@
 using System;
-using System.IO;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 using Microsoft.WindowsAzure.Storage.Table;
-using System.Diagnostics;
-using Microsoft.WindowsAzure.Storage;
 using Microsoft.Extensions.Caching.Memory;
 using System.Collections.Generic;
 using System.Linq;
 using Willezone.Azure.WebJobs.Extensions.DependencyInjection;
+using Microsoft.Extensions.Caching.Distributed;
+using MessagePack;
 
 namespace Serverless
 {
@@ -30,19 +28,14 @@ namespace Serverless
             CloudTable productsTable,
             
             [Inject]
-            IMemoryCache cache,
+            IDistributedCache cache,
             
             ILogger log)
         {
             log.LogInformation("***ListProducts HTTP trigger function processed a request.");
 
-            List<Product> products;
-
-            if(!cache.TryGetValue(ALLPRODUCTS, out products))
-            {
-                var productsFromCache = await FillProductsCache(productsTable, cache);
-                products = productsFromCache.Select(p => new Product{ Id = p.Id, Name = p.Name }).ToList();
-            }
+            var productsFromCache = await GetProductsFromCache(productsTable, cache);
+            var products = productsFromCache.Select(p => new Product { Id = p.Id, Name = p.Name }).ToList();
 
             return new OkObjectResult(products);
         }
@@ -58,20 +51,14 @@ namespace Serverless
             CloudTable productsTable,
 
             [Inject]
-            IMemoryCache cache,
+            IDistributedCache cache,
 
             ILogger log)
         {
             log.LogInformation("***GetProduct HTTP trigger function processed a request.");
 
-            List<ProductDetails> products;
-
-            if(!cache.TryGetValue(ALLPRODUCTS, out products))
-            {
-                products = await FillProductsCache(productsTable, cache);
-            }
-
-            ProductDetails productDetails = products.Where(p => p.Id == Guid.Parse(id)).FirstOrDefault();
+            var productsFromCache = await GetProductsFromCache(productsTable, cache);
+            var productDetails = productsFromCache.FirstOrDefault(p => p.Id == Guid.Parse(id));
 
             if (productDetails == null)
             {
@@ -83,18 +70,34 @@ namespace Serverless
             return new OkObjectResult(productDetails);
         }
 
-        private async Task<List<ProductDetails>> FillProductsCache(CloudTable productsTable, IMemoryCache cache)
+        private async Task<List<ProductDetails>> GetProductsFromCache(CloudTable productsTable, IDistributedCache cache)
         {
-            List<ProductDetails> products;
+            List<ProductDetails> productsFromCache;
 
+            var productsRaw = await cache.GetAsync(ALLPRODUCTS);
+
+            if (productsRaw != null)
+            {
+                productsFromCache = MessagePackSerializer.Deserialize<List<ProductDetails>>(productsRaw);
+            }
+            else
+            {
+                productsFromCache = await FillProductsCache(productsTable, cache);
+            }
+
+            return productsFromCache;
+        }
+
+        private async Task<List<ProductDetails>> FillProductsCache(CloudTable productsTable, IDistributedCache cache)
+        {
             var query = new TableQuery<ProductDetailsEntity>();
             var productEntities = (await productsTable.ExecuteQuerySegmentedAsync(query, null)).ToList();
             
-            products  = productEntities.Select(p => p.ToProductDetails()).ToList();
+            var products  = productEntities.Select(p => p.ToProductDetails()).ToList();
 
             var expirationTime = DateTime.Today.AddHours(1);
-            var cacheEntryOptions = new MemoryCacheEntryOptions().SetAbsoluteExpiration(expirationTime);
-            cache.Set(ALLPRODUCTS, products, cacheEntryOptions);
+            var cacheEntryOptions = new DistributedCacheEntryOptions().SetAbsoluteExpiration(expirationTime);
+            await cache.SetAsync(ALLPRODUCTS, MessagePackSerializer.Serialize(products), cacheEntryOptions);
 
             return products;
         }

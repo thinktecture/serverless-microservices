@@ -16,7 +16,7 @@ namespace Serverless
 
         private void ConfigureServices(IServiceCollection services)
         {
-            services.AddMemoryCache();
+            services.AddDistributedMemoryCache();
         }
     }
 }

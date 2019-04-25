@@ -5,6 +5,7 @@
     <RootNamespace>products_service_dotnet</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="MessagePack" Version="1.7.3.4" />
     <PackageReference Include="Microsoft.Azure.WebJobs.Extensions.Storage" Version="3.0.5" />
     <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="2.1.2" />
     <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="1.0.26" />
