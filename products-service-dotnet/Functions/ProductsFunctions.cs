@@ -40,7 +40,7 @@ namespace Serverless
             log.LogInformation("***ListProducts HTTP trigger function processed a request.");
 
             var productsFromCache = await GetProductsFromCache(productsTable, cache);
-            var products = productsFromCache.Select(p => new Product { Id = p.Id, Name = p.Name }).ToList();
+            List<Product> products = productsFromCache.Select(p => new Product { Id = p.Id, Name = p.Name }).ToList();
 
             return new OkObjectResult(products);
         }
@@ -65,7 +65,7 @@ namespace Serverless
             log.LogInformation("***GetProduct HTTP trigger function processed a request.");
 
             var productsFromCache = await GetProductsFromCache(productsTable, cache);
-            var productDetails = productsFromCache.FirstOrDefault(p => p.Id == Guid.Parse(id));
+            ProductDetails productDetails = productsFromCache.FirstOrDefault(p => p.Id == Guid.Parse(id));
 
             if (productDetails == null)
             {
