@@ -12,6 +12,8 @@ using System.Linq;
 using Willezone.Azure.WebJobs.Extensions.DependencyInjection;
 using Microsoft.Extensions.Caching.Distributed;
 using MessagePack;
+using Aliencube.AzureFunctions.Extensions.OpenApi.Attributes;
+using System.Net;
 
 namespace Serverless
 {
@@ -21,8 +23,10 @@ namespace Serverless
         private const string ALLPRODUCTS = "allproducts";
 
         [FunctionName("ListProducts")]
+        [OpenApiOperation("products", "Serverless Microservices")]
+        [OpenApiResponseBody(HttpStatusCode.OK, "application/json", typeof(List<Product>))]
         public async Task<IActionResult> ListProducts(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "GET", Route = "products")]
+            [HttpTrigger(AuthorizationLevel.Anonymous, "GET", Route = "api/products")]
             HttpRequest req,
 
             [Table("products", "products")]
@@ -42,8 +46,10 @@ namespace Serverless
         }
 
         [FunctionName("GetProduct")]
+        [OpenApiOperation("productbyid", "Serverless Microservices")]
+        [OpenApiResponseBody(HttpStatusCode.OK, "application/json", typeof(ProductDetails))]
         public async Task<ActionResult> GetProduct(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "GET", Route = "products/{id}")]
+            [HttpTrigger(AuthorizationLevel.Anonymous, "GET", Route = "api/products/{id}")]
             HttpRequest req,
             
             string id,
