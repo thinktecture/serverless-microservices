@@ -15,6 +15,7 @@ using MessagePack;
 
 namespace Serverless
 {
+    [StorageAccount("products")]
     public class ProductsFunctions
     {
         private const string ALLPRODUCTS = "allproducts";
