@@ -1,5 +1,5 @@
 import { AzureFunction, Context } from "@azure/functions"
-import { Guid } from "guid-typescript";
+import * as uuid from "uuid";
 import { ShippingCreatedMessage } from "../Messages/shippingCreatedMessage";
 
 const serviceBusQueueTrigger: AzureFunction = async function (context: Context, message: NewOrderMessage): Promise<void> {
@@ -10,10 +10,10 @@ const serviceBusQueueTrigger: AzureFunction = async function (context: Context, 
     await sleep(5000);
 
     var shippingCreated = new ShippingCreatedMessage();
-    shippingCreated.id = Guid.create();
-    shippingCreated.created = new Date().toISOString();
-    shippingCreated.orderId = message.order.id;
-    shippingCreated.userId = message.userId;
+    shippingCreated.Id = uuid.v4();
+    shippingCreated.Created = new Date().toISOString();
+    shippingCreated.OrderId = message.Order.Id;
+    shippingCreated.UserId = message.UserId;
 
     context.log.info("***New shipment: {0}", shippingCreated);
 

@@ -1,4 +1,4 @@
 declare interface NewOrderMessage {
-    order: Order;
-    userId: string;
+    Order: Order;
+    UserId: string;
 }

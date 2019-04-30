@@ -1,6 +1,6 @@
 declare interface Order {
-    id: string;
-    description: string;
-    created: string;
-    items: OrderItem[];
+    Id: string;
+    Description: string;
+    Created: string;
+    Items: OrderItem[];
 }

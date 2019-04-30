@@ -1,4 +1,4 @@
 declare interface OrderItem {
-    id: string;
-    quantity: number;
+    Id: string;
+    Quantity: number;
 }
