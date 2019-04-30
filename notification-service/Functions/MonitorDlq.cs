@@ -59,7 +59,7 @@ namespace Serverless
             email.AddTo("christian.weyer@thinktecture.com");
             email.AddContent("text/html", "PROBLEM: <br><pre>" + queueMessage + "</pre>");
             email.SetFrom(new EmailAddress("azuremonitor@thinktecture.com"));
-            email.SetSubject(String.Format($"Azure Serverless Microservices: Problem with {0}!", serviceName));
+            email.SetSubject($"Azure Serverless Microservices: Problem with {serviceName}!");
 
             return email;
         }
