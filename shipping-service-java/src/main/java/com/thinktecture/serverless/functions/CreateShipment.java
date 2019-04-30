@@ -13,14 +13,8 @@ import com.microsoft.azure.functions.annotation.ServiceBusQueueTrigger;
 import com.thinktecture.serverless.messages.NewOrderMessage;
 import com.thinktecture.serverless.messages.ShippingCreatedMessage;
 
-/**
- * Azure Functions with Service Bus Trigger.
- */
 public class CreateShipment {
     /**
-     * This function will be invoked when a new message is received at the Service
-     * Bus Queue.
-     * 
      * @throws InterruptedException
      * @throws IOException
      */
@@ -28,7 +22,7 @@ public class CreateShipment {
     @ServiceBusQueueOutput(name = "$return",
         queueName = "shippingsinitiated",
         connection = "ServiceBus")
-    public String /*ShippingCreatedMessage*/ run(
+    public String run(
             @ServiceBusQueueTrigger(name = "message", 
                 queueName = "ordersforshipping", 
                 connection = "ServiceBus")

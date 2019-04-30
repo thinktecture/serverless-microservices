@@ -1,4 +1,4 @@
-package com.thinktecture.serverless.dtos;
+package com.thinktecture.serverless.messages.dtos;
 
 import java.util.Date;
 import java.util.List;

@@ -1,0 +1,19 @@
+{
+  "bindings": [
+    {
+      "name": "message",
+      "type": "serviceBusTrigger",
+      "direction": "in",
+      "queueName": "ordersforshipping",
+      "connection": "ServiceBus"
+    },
+    {
+      "name": "outQueue",
+      "type": "serviceBus",
+      "direction": "out",
+      "queueName": "shippingsinitiated",
+      "connection": "ServiceBus"
+  }
+  ],
+  "scriptFile": "../dist/CreateShipment/index.js"
+}

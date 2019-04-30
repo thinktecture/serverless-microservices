@@ -8,7 +8,6 @@ using Willezone.Azure.WebJobs.Extensions.DependencyInjection;
 
 namespace Serverless
 {
-
     internal class Startup : IWebJobsStartup
     {
         public void Configure(IWebJobsBuilder builder) =>

@@ -1,0 +1,11 @@
+{
+  "bindings": [
+    {
+      "name": "timer",
+      "type": "timerTrigger",
+      "direction": "in",
+      "schedule": "0 */9 * * * *"
+    }
+  ],
+  "scriptFile": "../dist/KeepItWarm/index.js"
+}
