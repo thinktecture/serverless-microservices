@@ -1,32 +1,32 @@
 {
 	"folders": [
 		{
-			"name": "identity-server",
-			"path": "identity-server"
+			"name": "identity-service-dotnet",
+			"path": "identity-service-dotnet"
 		},
 		{
-			"name": "invoice-scanner",
-			"path": "invoice-scanner"
+			"name": "invoice-scanner-dotnet",
+			"path": "invoice-scanner-dotnet"
 		},
 		{
-			"name": "notification-service",
-			"path": "notification-service"
+			"name": "notification-service-dotnet",
+			"path": "notification-service-dotnet"
 		},
 		{
-			"name": "orders-service",
-			"path": "orders-service"
+			"name": "orders-service-dotnet",
+			"path": "orders-service-dotnet"
 		},
 		{
-			"name": "products-service",
-			"path": "products-service"
+			"name": "products-service-js",
+			"path": "products-service-js"
 		},
 		{
 			"name": "products-service-dotnet",
 			"path": "products-service-dotnet"
 		},
 		{
-			"name": "shipping-service",
-			"path": "shipping-service"
+			"name": "shipping-service-dotnet",
+			"path": "shipping-service-dotnet"
 		},
 		{
 			"name": "shipping-service-java",
@@ -37,8 +37,8 @@
 			"path": "shipping-service-ts"
 		},
 		{
-			"name": "shopping-client",
-			"path": "shopping-client"
+			"name": "shopping-client-ng",
+			"path": "shopping-client-ng"
 		}
 	],
 	"settings": {}
