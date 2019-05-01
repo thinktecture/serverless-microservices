@@ -1,0 +1,45 @@
+{
+	"folders": [
+		{
+			"name": "identity-server",
+			"path": "identity-server"
+		},
+		{
+			"name": "invoice-scanner",
+			"path": "invoice-scanner"
+		},
+		{
+			"name": "notification-service",
+			"path": "notification-service"
+		},
+		{
+			"name": "orders-service",
+			"path": "orders-service"
+		},
+		{
+			"name": "products-service",
+			"path": "products-service"
+		},
+		{
+			"name": "products-service-dotnet",
+			"path": "products-service-dotnet"
+		},
+		{
+			"name": "shipping-service",
+			"path": "shipping-service"
+		},
+		{
+			"name": "shipping-service-java",
+			"path": "shipping-service-java"
+		},
+		{
+			"name": "shipping-service-ts",
+			"path": "shipping-service-ts"
+		},
+		{
+			"name": "shopping-client",
+			"path": "shopping-client"
+		}
+	],
+	"settings": {}
+}
