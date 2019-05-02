@@ -39,6 +39,9 @@
 		{
 			"name": "shopping-client-ng",
 			"path": "shopping-client-ng"
+		},
+		{
+			"path": "plant-uml"
 		}
 	],
 	"settings": {}
