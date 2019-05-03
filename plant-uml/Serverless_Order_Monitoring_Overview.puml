@@ -1,0 +1,62 @@
+@startuml
+!pragma revision 1
+
+!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Container.puml
+
+!define AzurePuml https://raw.githubusercontent.com/RicardoNiepel/Azure-PlantUML/master/dist
+!includeurl AzurePuml/AzureCommon.puml
+!includeurl AzurePuml/AzureC4Integration.puml
+!includeurl AzurePuml/Databases/AzureCosmosDb.puml
+!includeurl AzurePuml/Web/AzureCDN.puml
+!includeurl AzurePuml/Web/AzureSearch.puml
+!includeurl AzurePuml/Storage/AzureBlobStorage.puml
+!includeurl AzurePuml/Storage/AzureStorage.puml
+!includeurl AzurePuml/Compute/AzureFunction.puml
+!includeurl AzurePuml/Integration/AzureServiceBus.puml
+!includeurl AzurePuml/Web/AzureSignalRService.puml
+
+Person(user, "User")
+Container(spa, "Shopping Monitor SPA", "Angular")
+Rel(user, spa, "Uses")
+
+AzureCDN(cdn, "SPA CDN", "Standard Verizon", "Caches static SPA assets (for lower latency and faster delivery of content)")
+AzureBlobStorage(orderMonitoringStorage, "SPA Static Content", "General Purpose v2, Hot, LRS")
+Rel_Neighbor(cdn, orderMonitoringStorage, "Reads from", "HTTPS")
+Rel_Back_Neighbor(spa, cdn, "Delivers", "HTTP/2")
+
+AzureFunction(ordersFunctionApp, "Orders Service", ".NET, C#", "Listing & creating orders")
+AzureCosmosDb(ordersDb, "Orders DB", "SQL API, 400 RUs")
+Rel(ordersFunctionApp, ordersDb, "Uses", "Sockets")
+Rel(spa, ordersFunctionApp, "Uses", "JSON, HTTPS")
+AzureServiceBus(newOrdersQueue, "New Orders Queue", "Service Bus Queue")
+AzureServiceBus(ordersForShippingQueue, "Orders for Shipping Queue", "Service Bus Queue")
+Rel(ordersFunctionApp, newOrdersQueue, "Sends", "AMQP")
+Rel(newOrdersQueue, ordersFunctionApp, "Reads", "AMQP")
+Rel(ordersFunctionApp, ordersForShippingQueue, "Sends", "AMQP")
+
+AzureFunction(productsFunctionApp, "Products Service", "node.js, JavaScript", "Listing & searching products")
+AzureStorage(productsStorage, "Products Data", "General Purpose v2, Hot, LRS")
+AzureSearch(search, "Products Search Index", "Standard S1", "Enables full-text search for products")
+Rel(productsFunctionApp, productsStorage, "Uses", "JSON, HTTPS")
+Rel(productsFunctionApp, search, "Uses", "JSON, HTTPS")
+Rel_Back_Neighbor(productsStorage, search, "Builds index from")
+Rel(spa, productsFunctionApp, "Uses", "JSON, HTTPS")
+
+AzureFunction(shippingFunctionApp, "Shipping Service", "Java", "Handling shipping of orders")
+Rel(ordersForShippingQueue, shippingFunctionApp, "Reads", "AMQP")
+
+AzureServiceBus(shippingInitiatedQueue, "Shipping Initiated Queue", "Service Bus Queue")
+Rel(shippingFunctionApp, shippingInitiatedQueue, "Sends", "AMQP")
+
+AzureFunction(notificationsFunctionApp, "Notifications Service", ".NET, C#", "Sending out notifications via WebSockets, email")
+Rel_Neighbor(shippingInitiatedQueue, notificationsFunctionApp, "Reads", "AMQP")
+AzureSignalRService(signalRPushService, "Orders & Shippings", "WebSockets")
+Rel_Neighbor(notificationsFunctionApp, signalRPushService, "Uses", "HTTPS")
+Rel_Neighbor(signalRPushService, spa, "Notifies", "WebSockets")
+
+AzureFunction(identityFunctionApp, "Identity Service", ".NET, C#", "OAuth2 & OIDC STS")
+'Rel_Neighbor(spa, identityFunctionApp, "Authenticate")
+'Rel(notificationsFunctionApp, identityFunctionApp, "Trusts & validates")
+'Rel(ordersFunctionApp, identityFunctionApp, "Trusts & validates")
+
+@enduml
