@@ -46,17 +46,18 @@ AzureFunction(shippingFunctionApp, "Shipping Service", "Java", "Handling shippin
 Rel(ordersForShippingQueue, shippingFunctionApp, "Reads", "AMQP")
 
 AzureServiceBus(shippingInitiatedQueue, "Shipping Initiated Queue", "Service Bus Queue")
-Rel(shippingFunctionApp, shippingInitiatedQueue, "Sends", "AMQP")
+Rel_Neighbor(shippingFunctionApp, shippingInitiatedQueue, "Sends", "AMQP")
 
 AzureFunction(notificationsFunctionApp, "Notifications Service", ".NET, C#", "Sending out notifications via WebSockets, email")
 Rel_Neighbor(shippingInitiatedQueue, notificationsFunctionApp, "Reads", "AMQP")
 AzureSignalRService(signalRPushService, "Orders & Shippings", "WebSockets")
-Rel_Neighbor(notificationsFunctionApp, signalRPushService, "Uses", "HTTPS")
-Rel_Neighbor(signalRPushService, spa, "Notifies", "WebSockets")
+Rel(notificationsFunctionApp, signalRPushService, "Uses", "HTTPS")
+Rel(signalRPushService, spa, "Notifies", "WebSockets")
+Rel(spa, signalRPushService, "Registers")
 
 AzureFunction(identityFunctionApp, "Identity Service", ".NET, C#", "OAuth2 & OIDC STS")
-'Rel_Neighbor(spa, identityFunctionApp, "Authenticate")
-'Rel(notificationsFunctionApp, identityFunctionApp, "Trusts & validates")
-'Rel(ordersFunctionApp, identityFunctionApp, "Trusts & validates")
+Rel_Neighbor(spa, identityFunctionApp, "Authenticate")
+Rel(notificationsFunctionApp, identityFunctionApp, "Trusts & validates")
+Rel(ordersFunctionApp, identityFunctionApp, "Trusts & validates")
 
 @enduml
