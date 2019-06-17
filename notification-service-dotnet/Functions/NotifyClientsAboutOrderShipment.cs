@@ -24,7 +24,7 @@ namespace Serverless
 
             ShippingCreatedMessage message = JsonConvert.DeserializeObject<ShippingCreatedMessage>(msg);
             
-            // NOTE: Group feature not yet available in SignalR binding
+            // TODO: Use group feature in SignalR binding
             var messageToNotify = new { userId = message.UserId, orderId = message.OrderId };
 
             await notificationMessages.AddAsync(new SignalRMessage
