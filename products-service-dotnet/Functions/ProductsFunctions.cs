@@ -48,7 +48,7 @@ namespace Serverless
         [FunctionName("GetProduct")]
         [OpenApiOperation("productbyid", "Serverless Microservices")]
         [OpenApiResponseBody(HttpStatusCode.OK, "application/json", typeof(ProductDetails))]
-        public async Task<ActionResult> GetProduct(
+        public async Task<IActionResult> GetProduct(
             [HttpTrigger(AuthorizationLevel.Anonymous, "GET", Route = "api/products/{id}")]
             HttpRequest req,
             

@@ -21,19 +21,15 @@ namespace Serverless
         public async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Anonymous, "GET", Route = "api/orders")]
             HttpRequest req,
-
             IBinder binder,
-
             ILogger log)
         {
             log.LogInformation("GetOrders HTTP trigger function processed a request.");
 
-            /*
             if (!await req.CheckAuthorization("api"))
             {
                 return new UnauthorizedResult();
             }
-            */
             
             var cosmosDb = new CosmosDBAttribute("ordersservice", "data");
             cosmosDb.ConnectionStringSetting = "CosmosDB";

@@ -53,7 +53,7 @@ Rel_Neighbor(shippingInitiatedQueue, notificationsFunctionApp, "Reads", "AMQP")
 AzureSignalRService(signalRPushService, "Orders & Shippings", "WebSockets")
 Rel(notificationsFunctionApp, signalRPushService, "Uses", "HTTPS")
 Rel(signalRPushService, spa, "Notifies", "WebSockets")
-Rel(spa, signalRPushService, "Registers")
+Rel(spa, notificationsFunctionApp, "Registers")
 
 AzureFunction(identityFunctionApp, "Identity Service", ".NET, C#", "OAuth2 & OIDC STS")
 Rel_Neighbor(spa, identityFunctionApp, "Authenticate")

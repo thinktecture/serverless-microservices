@@ -335,3 +335,4 @@ dist
 .DS_Store
 local.settings.json
 /identity-server/appsettings.json
+/plant-uml/out
