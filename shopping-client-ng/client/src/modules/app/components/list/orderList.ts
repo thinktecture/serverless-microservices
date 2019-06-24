@@ -6,7 +6,8 @@ import { OrderWithItems } from "../../models/orderWithItems";
 
 @Component({
   selector: "app-order-list",
-  templateUrl: "orderList.html"
+  templateUrl: "orderList.html",
+  styleUrls: ["orderList.scss"]
 })
 export class OrderListComponent implements OnInit {
   public ordersWithItems$: Observable<OrderWithItems[]>;

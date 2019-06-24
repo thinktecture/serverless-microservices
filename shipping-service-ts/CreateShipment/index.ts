@@ -2,7 +2,8 @@ import { AzureFunction, Context } from "@azure/functions"
 import * as uuid from "uuid";
 import { ShippingCreatedMessage } from "../Messages/shippingCreatedMessage";
 
-const serviceBusQueueTrigger: AzureFunction = async function (context: Context, message: NewOrderMessage): Promise<void> {
+const serviceBusQueueTrigger: AzureFunction = 
+async function (context: Context, message: NewOrderMessage): Promise<void> {
     context.log.info('***CreateShipment ServiceBus queue trigger function processed message', message);
 
     // NOTE: Look at our complex business logic!
