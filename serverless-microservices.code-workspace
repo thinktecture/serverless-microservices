@@ -44,5 +44,7 @@
 			"path": "plant-uml"
 		}
 	],
-	"settings": {}
+	"settings": {
+		"azureFunctions.showTargetFrameworkWarning": false
+	}
 }
