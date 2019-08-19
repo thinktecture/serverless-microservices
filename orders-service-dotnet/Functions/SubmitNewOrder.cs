@@ -61,7 +61,7 @@ namespace Serverless
             }
             catch (ServiceBusException sbx)
             {
-                // TODO: retry policy...
+                // TODO: think about retry policy (e.g. https://github.com/jeffhollan/functions-csharp-queue-exponential/blob/master/ExponentialRetry.cs)
                 log.LogError(sbx, "Service Bus Error");
                 throw;
             }
