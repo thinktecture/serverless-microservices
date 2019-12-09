@@ -33,7 +33,10 @@ namespace IdentityServer
         {
             services.AddMvc().SetCompatibilityVersion(Microsoft.AspNetCore.Mvc.CompatibilityVersion.Version_2_1);
 
-            var builder = services.AddIdentityServer()
+            var builder = services.AddIdentityServer(options => {
+                    options.IssuerUri = "http://localhost:7075";
+                    options.PublicOrigin = "http://localhost:7075";
+                })
                 .AddInMemoryIdentityResources(Config.GetIdentityResources())
                 .AddInMemoryApiResources(Config.GetApis())
                 .AddInMemoryClients(Config.GetClients())

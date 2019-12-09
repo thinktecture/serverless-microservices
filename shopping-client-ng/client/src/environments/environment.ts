@@ -15,5 +15,7 @@ export const resourceOwnerConfig: AuthConfig = {
   clientId: "resourceowner",
   dummyClientSecret: "no-really-a-secret",
   scope: "openid profile email api",
-  oidc: false
+  oidc: false,
+  strictDiscoveryDocumentValidation: false,
+  requireHttps: false
 };
