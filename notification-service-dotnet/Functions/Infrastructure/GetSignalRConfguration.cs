@@ -26,10 +26,10 @@ namespace Serverless
         {
             log.LogInformation("GetOrdersHubSignalRConfguration HTTP trigger function processed a request.");
 
-            if (!await req.CheckAuthorization("api"))
+            /*if (!await req.CheckAuthorization("api"))
             {
                 return new UnauthorizedResult();
-            }
+            }*/
 
             return new OkObjectResult(connectionInfo);
         }
@@ -46,10 +46,10 @@ namespace Serverless
         {
             log.LogInformation("GetShippingsHubSignalRConfguration HTTP trigger function processed a request.");
 
-            if (!await req.CheckAuthorization("api"))
+            /*if (!await req.CheckAuthorization("api"))
             {
                 return new UnauthorizedResult();
-            }
+            }*/
 
             return new OkObjectResult(connectionInfo);
         }
